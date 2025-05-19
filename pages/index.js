@@ -7,28 +7,31 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!input.trim()) return
-    setLoading(true)
-    setResponse('')
-    setAudioUrl(null)
+  if (!input.trim()) return
+  setLoading(true)
+  setResponse('')
+  setAudioUrl(null)
 
-    const gpt = await fetch('/api/gpt', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input })
-    })
-    const gptData = await gpt.json()
-    setResponse(gptData.message)
+  const gpt = await fetch('/api/gpt', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ input })
+  })
 
-    const tts = await fetch('/api/tts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: gptData.message })
-    })
-    const ttsData = await tts.json()
-    setAudioUrl(ttsData.audioUrl)
-    setLoading(false)
-  }
+  const gptData = await gpt.json()
+  setResponse(gptData.message)
+
+  const tts = await fetch('/api/tts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: gptData.message })
+  })
+
+  const ttsData = await tts.json()
+  setAudioUrl(ttsData.audioUrl)
+  setLoading(false)
+}
+
 
   return (
     <div style={{ padding: 40 }}>
