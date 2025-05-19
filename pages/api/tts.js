@@ -1,26 +1,28 @@
 export default async function handler(req, res) {
-  const { text } = req.body;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' })
+  }
 
-  const ttsResponse = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${process.env.VOICE_ID}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "xi-api-key": process.env.ELEVENLABS_API_KEY,
-      },
-      body: JSON.stringify({
-        text,
-        model_id: "eleven_monolingual_v1",
-        voice_settings: {
-          stability: 0.3,
-          similarity_boost: 0.8,
-        },
-      }),
-    }
-  );
+  const { text } = req.body
 
-  const audioBuffer = await ttsResponse.arrayBuffer();
-  const base64Audio = Buffer.from(audioBuffer).toString("base64");
-  res.status(200).json({ audioUrl: `data:audio/mpeg;base64,${base64Audio}` });
+  const ttsResponse = await fetch('https://api.elevenlabs.io/v1/text-to-speech/YOUR_VOICE_ID', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'xi-api-key': process.env.ELEVENLABS_API_KEY
+    },
+    body: JSON.stringify({
+      text,
+      voice_settings: {
+        stability: 0.4,
+        similarity_boost: 0.6
+      }
+    })
+  })
+
+  const buffer = await ttsResponse.arrayBuffer()
+  const audioBase64 = Buffer.from(buffer).toString('base64')
+  const audioUrl = `data:audio/mpeg;base64,${audioBase64}`
+
+  res.status(200).json({ audioUrl })
 }
