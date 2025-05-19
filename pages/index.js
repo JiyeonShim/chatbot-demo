@@ -7,31 +7,40 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-  if (!input.trim()) return
-  setLoading(true)
-  setResponse('')
-  setAudioUrl(null)
+    if (!input.trim()) return
+    setLoading(true)
+    setResponse('')
+    setAudioUrl(null)
 
-  const gpt = await fetch('/api/gpt', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ input })
-  })
+    try {
+      const gptRes = await fetch('/api/gpt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input })
+      })
 
-  const gptData = await gpt.json()
-  setResponse(gptData.message)
+      if (!gptRes.ok) throw new Error(`GPT Error ${gptRes.status}`)
 
-  const tts = await fetch('/api/tts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: gptData.message })
-  })
+      const gptData = await gptRes.json()
+      setResponse(gptData.message)
 
-  const ttsData = await tts.json()
-  setAudioUrl(ttsData.audioUrl)
-  setLoading(false)
-}
+      const ttsRes = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: gptData.message })
+      })
 
+      if (!ttsRes.ok) throw new Error(`TTS Error ${ttsRes.status}`)
+
+      const ttsData = await ttsRes.json()
+      setAudioUrl(ttsData.audioUrl)
+    } catch (err) {
+      console.error('⚠️ Error:', err)
+      setResponse('⚠️ 하니엘이 말을 잃었어요...')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div style={{ padding: 40 }}>
