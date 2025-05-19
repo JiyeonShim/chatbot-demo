@@ -20,7 +20,6 @@ export default function Home() {
       })
 
       if (!gptRes.ok) throw new Error(`GPT Error ${gptRes.status}`)
-
       const gptData = await gptRes.json()
       setResponse(gptData.message)
 
@@ -31,7 +30,6 @@ export default function Home() {
       })
 
       if (!ttsRes.ok) throw new Error(`TTS Error ${ttsRes.status}`)
-
       const ttsData = await ttsRes.json()
       setAudioUrl(ttsData.audioUrl)
     } catch (err) {
