@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 
 export default function Home() {
@@ -37,13 +36,13 @@ export default function Home() {
       <textarea
         rows={4}
         cols={50}
-        placeholder="하니엘에게 말 걸기..."
+        placeholder="한니엘에게 말 걸기..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       <br />
       <button onClick={handleSubmit} disabled={loading}>
-        {loading ? '생각 중...' : '하니엘의 대답 듣기'}
+        {loading ? '생각 중...' : '한니엘의 대답 듣기'}
       </button>
       <p>{response}</p>
       {audioUrl && <audio controls src={audioUrl} autoPlay />}

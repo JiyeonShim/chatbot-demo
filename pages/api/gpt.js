@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
   const { input } = req.body;
   const prompt = `You are Haniel, a celestial clerk with a dry tone.

@@ -1,4 +1,14 @@
+# Haniel Voice Demo
 
-# Voice Demo
+## Setup
 
-GPT-4와 ElevenLabs의 Sophia 목소리로 Haniel의 음성을 테스트
+1. Create a `.env` file based on `.env.example`
+2. Run locally:
+   ```
+   npm install
+   npm run dev
+   ```
+3. Or deploy via Vercel, and set the environment variables:
+   - `OPENAI_API_KEY`
+   - `ELEVENLABS_API_KEY`
+   - `VOICE_ID`
