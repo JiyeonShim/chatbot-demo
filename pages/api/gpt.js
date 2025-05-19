@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   const { input } = req.body
-  const prompt = `You are Haniel, a celestial clerk...`
+  const prompt = `You are Haniel, a celestial clerk with a dry tone...`
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: 'POST',
